@@ -1,0 +1,67 @@
+<div class="overlay">
+
+  <div class="card">
+
+    <!-- HEADER -->
+    <div class="header">
+      <mat-icon>pets</mat-icon>
+      <h3>{{ isLogin ? 'Acceso de Dueños' : 'Crear Cuenta' }}</h3>
+      <p>
+        {{ isLogin
+        ? 'Ingresa para reportar pérdidas'
+        : 'Únete a la comunidad' }}
+      </p>
+    </div>
+
+    <!-- ERROR -->
+    <div *ngIf="errorMessage" class="error">
+      <mat-icon>error</mat-icon>
+      {{ errorMessage }}
+    </div>
+
+    <!-- SUCCESS -->
+    <div *ngIf="successMessage" class="success">
+      <mat-icon>check_circle</mat-icon>
+      {{ successMessage }}
+    </div>
+
+    <!-- FORM -->
+    <form (ngSubmit)="submit()">
+
+      <mat-form-field appearance="outline" *ngIf="!isLogin">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput [(ngModel)]="fullName" name="fullName" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email" name="email" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" [(ngModel)]="password" name="password" required>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+        <mat-spinner *ngIf="isLoading" diameter="18"></mat-spinner>
+        <span *ngIf="!isLoading">
+          {{ isLogin ? 'Iniciar sesión' : 'Registrarse' }}
+        </span>
+      </button>
+
+    </form>
+
+    <!-- TOGGLE -->
+    <button mat-button (click)="toggleMode()">
+      {{ isLogin ? 'Crear cuenta' : 'Ya tengo cuenta' }}
+    </button>
+
+    <!-- CLOSE -->
+    <button mat-stroked-button (click)="close.emit()">
+      Cancelar
+    </button>
+
+  </div>
+
+</div>
