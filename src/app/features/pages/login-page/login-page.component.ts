@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {AuthFormComponent} from '../../components/auth-form/auth-form.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -11,5 +12,8 @@ import {AuthFormComponent} from '../../components/auth-form/auth-form.component'
   styleUrl: './login-page.component.css'
 })
 export class LoginPageComponent {
-
+  private router = inject(Router);
+  goBack() {
+    this.router.navigate(['/'])
+  }
 }

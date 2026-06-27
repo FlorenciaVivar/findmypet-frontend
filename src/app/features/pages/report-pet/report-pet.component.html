@@ -1,1 +1,212 @@
-<p>report-pet works!</p>
+<div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-end justify-center z-50 p-0 sm:p-4">
+  <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl shadow-xl flex flex-col max-h-[92vh] overflow-hidden">
+
+    <!-- Cabecera -->
+    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-slate-50">
+      <div class="flex items-center gap-1.5">
+
+        <span class="text-red-500 text-lg">❤️</span>
+        <h3 class="font-bold text-slate-800 text-base">Publicar Mascota Perdida</h3>
+      </div>
+      <button (click)="onClose()" class="p-1.5 rounded-full bg-slate-200/80 text-slate-500 hover:bg-slate-200">
+        <span class="text-lg">✕</span>
+      </button>
+    </div>
+
+    <!-- Formulario -->
+    <form (ngSubmit)="handleSubmit()" class="flex-1 overflow-y-auto p-5 space-y-4">
+
+      <!-- Foto Principal -->
+      <div class="space-y-1.5">
+        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Foto de la mascota *</label>
+
+        @if (imageUrl) {
+          <div class="relative h-44 rounded-xl overflow-hidden group">
+            <img [src]="imageUrl" alt="Mascota" class="w-full h-full object-cover" />
+            <button
+              type="button"
+              (click)="imageUrl = ''"
+              class="absolute top-2 right-2 bg-black/70 hover:bg-black/80 text-white p-1 rounded-full"
+            >
+              <span class="text-xs px-1">✕</span>
+            </button>
+          </div>
+        } @else {
+          <div class="border-2 border-dashed border-slate-200 hover:border-red-500 rounded-xl h-36 flex flex-col items-center justify-center bg-slate-50 transition cursor-pointer relative">
+            <input
+              type="file"
+              accept="image/*"
+              (change)="handleImageChange($event)"
+              class="absolute inset-0 opacity-0 cursor-pointer"
+              required
+            />
+            <span class="text-xl mb-1">📷</span>
+            <span class="text-xs text-slate-600 font-medium">Subir foto de tu mascota</span>
+            <span class="text-[10px] text-slate-400 mt-1">Imágenes nítidas ayudan a que la IA compare mejor</span>
+          </div>
+        }
+      </div>
+
+      <!-- Nombre y Especie -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Nombre *</label>
+          <input
+            type="text"
+            placeholder="Ej. Bobby"
+            [(ngModel)]="name"
+            name="name"
+            class="w-full text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 font-medium"
+            required
+          />
+        </div>
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Especie *</label>
+          <select
+            [(ngModel)]="species"
+            name="species"
+            class="w-full text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 font-semibold bg-white"
+          >
+            <option value="perro">🐶 Perro</option>
+            <option value="gato">🐱 Gato</option>
+            <option value="otro">🐾 Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Raza y Color -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Raza / Tipo *</label>
+          <input
+            type="text"
+            placeholder="Ej. Mestizo, Caniche..."
+            [(ngModel)]="breed"
+            name="breed"
+            class="w-full text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 font-medium"
+            required
+          />
+        </div>
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Color de pelaje</label>
+          <input
+            type="text"
+            placeholder="Ej. Marrón con negro"
+            [(ngModel)]="color"
+            name="color"
+            class="w-full text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 font-medium"
+          />
+        </div>
+      </div>
+
+      <!-- Fecha y Teléfono -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Fecha de pérdida *</label>
+          <input
+            type="date"
+            [(ngModel)]="lostDate"
+            name="lostDate"
+            class="w-full text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 font-semibold text-slate-700"
+            required
+          />
+        </div>
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Tel. de contacto *</label>
+          <input
+            type="text"
+            placeholder="Ej. +34 600..."
+            [(ngModel)]="contactPhone"
+            name="contactPhone"
+            class="w-full text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 font-medium"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Zona / Barrio y Mapa -->
+      <div class="grid grid-cols-1 gap-3">
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Zona o Barrio de pérdida *</label>
+          <input
+            type="text"
+            placeholder="Ej. Eixample, Barcelona"
+            [(ngModel)]="locationName"
+            name="locationName"
+            class="w-full text-xs px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 font-medium"
+            required
+          />
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-[11px] font-bold text-slate-600 uppercase tracking-wide">Ubicación exacta en el mapa</label>
+            <button
+              type="button"
+              (click)="showMap = !showMap"
+              class="text-xs text-red-600 font-semibold flex items-center gap-1 hover:underline"
+            >
+              📍 {{ showMap ? "Ocultar mapa" : "Ver mapa interactivo" }}
+            </button>
+          </div>
+
+          @if (showMap) {
+            <div class="h-44 w-full">
+              <app-interactive-map
+                [pets]="[]"
+                [pickerMode]="true"
+                [center]="[latitude, longitude]"
+                [zoom]="12"
+
+              />
+            </div>
+          } @else {
+            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2 text-slate-600">
+                <span class="text-red-500">📍</span>
+                <span>Ubicación: {{ latitude  }}, {{ longitude }}</span>
+              </div>
+              <button
+                type="button"
+                (click)="showMap = true"
+                class="bg-white hover:bg-slate-100 text-slate-700 font-medium px-2.5 py-1 rounded-lg shadow-sm border border-slate-200"
+              >
+                Establecer mapa
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="space-y-1">
+        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Detalles y descripción física</label>
+        <textarea
+          placeholder="Ej. Cojea de la pata trasera izquierda, tiene una cicatriz en el lomo, es asustadizo..."
+          rows="3"
+          [(ngModel)]="description"
+          name="description"
+          class="w-full text-xs p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-red-500 font-medium"
+        ></textarea>
+      </div>
+
+      <!-- Botones -->
+      <div class="pt-2">
+        <button
+          type="submit"
+          [disabled]="isSubmitting"
+          class="w-full bg-red-600 text-white rounded-xl py-3 font-semibold hover:bg-red-700 transition flex items-center justify-center gap-2 disabled:bg-red-300 shadow-lg shadow-red-500/10 text-sm"
+        >
+          @if (isSubmitting) {
+            <span class="inline-block animate-spin mr-1">⏳</span>
+            <span>Publicando alerta de mascota...</span>
+          } @else {
+            <span class="font-bold">+</span>
+            <span>Publicar Pérdida</span>
+          }
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
