@@ -21,7 +21,6 @@ export class AuthFormComponent {
   errorMessage = signal<string>('');
   successMessage = signal<string>('');
 
-  // Formulario Reactivo Único
   authForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],

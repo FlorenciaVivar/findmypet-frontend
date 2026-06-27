@@ -15,11 +15,9 @@ export interface AuthResponse {
 export class AuthService {
   private http = inject(HttpClient);
 
-  // Estados reactivos globales usando Signals
   currentUser = signal<User | null>(null);
   token = signal<string | null>(null);
 
-  // Computed signal para saber si está autenticado al toque
   isAuthenticated = computed(() => !!this.token());
 
   login(credentials: any): Observable<AuthResponse> {
